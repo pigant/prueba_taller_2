@@ -9,6 +9,7 @@
     </h:head>
     <h:body>
 		<h:form id="panel">
+			<p:growl id="mensajes"/>
 			<input type="hidden" name="valor" value="#{randomQuestionBean.avance}"/>
 			<input type="hidden" name="correcta" value="#{randomQuestionBean.respuestasCorrectas}"/>
 			<p:panel> 
@@ -26,10 +27,16 @@
 					<f:selectItem 
 						itemValue="3" 
 						itemLabel="#{randomQuestionBean.preguntaRandomRespuestas[3]}"/>
-					<p:ajax update="panel" listener="#{randomQuestionBean.newPregunta}"/>
 				</p:selectOneRadio>
+				<p:commandButton value="Aceptar" actionListener="#{randomQuestionBean.newPregunta}" update="panel">
+					<p:confirm message="Esta completamente seguro?"/>
+				</p:commandButton>
 				<p:progressBar widgetVar="pb" value="#{randomQuestionBean.avance}"/>
 			</p:panel>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" widgetVar="agregar" header="Seguro?">
+				<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 		</h:form>
     </h:body>
 </html>

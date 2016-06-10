@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -37,14 +38,14 @@ public class RandomQuestionBean {
 
 	int respuestasCorrectas = 0;
 
+	@ManagedProperty(value = "#{preguntaBean}")
+	PreguntaBean p;
+
 	/**
 	 * Creates a new instance of RandomQuestionBean
 	 */
 	public RandomQuestionBean() {
 	}
-
-	@ManagedProperty(value = "#{preguntaBean}")
-	PreguntaBean p;
 
 	@PostConstruct
 	public void init() {
@@ -135,16 +136,12 @@ public class RandomQuestionBean {
 		return listaPreguntas.get(indexRandom).getPregunta();
 	}
 
-	public boolean getCorrecta(int index) {
-		return correcta == index;
-	}
-
 	public String[] getPreguntaRandomRespuestas() {
 		return listaPreguntas.get(indexRandom).getRespuestas();
 	}
 
 	public void setRespuesta(String respuesta) {
-		respuestasCorrectas += Integer.valueOf(respuesta) == listaPreguntas.get(indexRandom).getCorrecta() ? 1 : 0;
+		this.respuesta = respuesta;
 	}
 
 	public String getRespuesta() {
@@ -162,11 +159,22 @@ public class RandomQuestionBean {
 	String respuesta = "";
 
 	public void newPregunta() {
+		final int indiceCorrecto = listaPreguntas.get(indexRandom).getCorrecta();
+		boolean correcta = Integer.valueOf(respuesta) == indiceCorrecto;
+		if (correcta) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("La respuesta es correcta!"));
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("La respuesta es incorrecta!  :((("));
+		}
+		respuestasCorrectas += correcta ? 1 : 0;
 		indexRandom++;
 		avance += 100.0 / listaPreguntas.size();
+		respuesta = "";
 		if (avance >= 100) {
 			try {
-				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+				String b = String.valueOf(respuestasCorrectas);
+				String m = String.valueOf(listaPreguntas.size() - respuestasCorrectas);
+				FacesContext.getCurrentInstance().getExternalContext().redirect("resultados.xhtml?buenas=" + b + "&malas=" + m);
 			} catch (IOException ex) {
 				Logger.getLogger(RandomQuestionBean.class.getName()).log(Level.SEVERE, null, ex);
 			}
