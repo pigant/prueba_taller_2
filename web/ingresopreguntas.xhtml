@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Ingreso de preguntas</title>
+    </h:head>
+    <h:body>
+		<h:form id="formulario">
+			<p:panelGrid columns="2">
+				<p:outputLabel value="Ingrese la pregunta:"/>
+				<p:inputText value="#{preguntaBean.pregunta}"/>
+				<p:outputLabel value="Respuesta correcta:"/>
+				<p:inputText value="#{preguntaBean.respuestas[0]}"/>
+				<p:outputLabel value="Respuesta alternativa:"/>
+				<p:inputText value="#{preguntaBean.respuestas[1]}"/>
+				<p:outputLabel value="Respuesta alternativa:"/>
+				<p:inputText value="#{preguntaBean.respuestas[2]}"/>
+				<p:outputLabel value="Respuesta alternativa:"/>
+				<p:inputText value="#{preguntaBean.respuestas[3]}"/>
+				<p:commandButton actionListener="#{preguntaBean.agregarPregunta()}">
+					<p:confirm message="Esta seguro que desea guardar la pregunta?"/>
+				</p:commandButton>
+			</p:panelGrid>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" widgetVar="agregar" header="agregar">
+				<f:facet name="message">
+					<h:outputText value="Esta seguro?"/>
+				</f:facet>
+				<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
+								 onclick="PF('agregar').hide();PF('otro').show()"/>
+				<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+			<p:confirmDialog showEffect="fade" hideEffect="fade" widgetVar="otro" header="otro">
+				<f:facet name="message">
+					<h:outputText value="Desea agregar otra pregunta?"/>
+				</f:facet>
+				<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" 
+								 icon="ui-icon-check" onclick="PF('otro').hide();$('#formulario')[0].reset()" />
+				<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" 
+								 onclick="document.location = 'index.xhtml'"/>
+			</p:confirmDialog>
+		</h:form>
+	</h:body>
+</html>
+
