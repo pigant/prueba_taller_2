@@ -30,12 +30,12 @@ public class PreguntaBean implements Serializable {
 	 * Creates a new instance of PreguntaBean
 	 */
 	public PreguntaBean() {
-		String[] s = {"hola", "a", "todos", "pregunta"};
+		String[] s = {"correcta", "mala", "mala", "mala"};
 		listaPreguntas.add(new Pregunta("pregunta 1", s, 0));
-		listaPreguntas.add(new Pregunta("pregunta 2", s, 0));
-		listaPreguntas.add(new Pregunta("pregunta 3", s, 0));
-		listaPreguntas.add(new Pregunta("pregunta 4", s, 0));
-		listaPreguntas.add(new Pregunta("pregunta 5", s, 0));
+		listaPreguntas.add(new Pregunta("pregunta 2", s.clone(), 0));
+		listaPreguntas.add(new Pregunta("pregunta 3", s.clone(), 0));
+		listaPreguntas.add(new Pregunta("pregunta 4", s.clone(), 0));
+		listaPreguntas.add(new Pregunta("pregunta 5", s.clone(), 0));
 	}
 
 	public String getPregunta() {
