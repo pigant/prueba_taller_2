@@ -27,7 +27,7 @@ import javax.faces.context.FacesContext;
 @ViewScoped
 public class RandomQuestionBean {
 
-	List<Pregunta> listaPreguntas = new ArrayList<>();
+	List<Pregunta> listaPreguntas;
 
 	int indexRandom = 0;
 
@@ -48,15 +48,25 @@ public class RandomQuestionBean {
 
 	@PostConstruct
 	public void init() {
+		listaPreguntas = new ArrayList<>();
 		List<Pregunta> preguntas = p.getListaPreguntas();
 		ArrayList<Integer> salidosLista = new ArrayList<>(preguntas.size());
+		//Por cada pregunta registrada
 		for (Pregunta pregunta : preguntas) {
 			boolean continuar = true;
 			while (continuar) {
+				//Genero un numero random
 				int numero = new Random().nextInt(preguntas.size());
+				// Reviso que antes no haya salido, de lo contrario genero otro
 				if (!salidosLista.contains(numero)) {
+					//Obtengo la pregunta random
 					Pregunta pp = preguntas.get(numero);
+					// La guardo en mi nueva lista
 					listaPreguntas.add(pp);
+					// El numero se guarda en una lista, para que no se vuelva repetir
+					salidosLista.add(numero);
+					// Aca abajo las respuestas quedan ordenadas en random
+					//CODIGO CON BUG ACTUALMENTE
 					String[] respuestas = pp.getRespuestas();
 					String[] tempRespuesta = new String[4];
 					ArrayList<Integer> respuestasRandom = new ArrayList(4);
@@ -79,7 +89,6 @@ public class RandomQuestionBean {
 						tempRespuesta[i] = respuestas[indice];
 					}
 					pp.setRespuestas(tempRespuesta);
-					salidosLista.add(numero);
 					continuar = false;
 				}
 			}

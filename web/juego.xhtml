@@ -31,13 +31,5 @@
 				<p:progressBar widgetVar="pb" value="#{randomQuestionBean.avance}"/>
 			</p:panel>
 		</h:form>
-		<script type="text/javascript">
-            lista = [];
-            avance = 100.0 / #{randomQuestionBean.listaPreguntas.size()};
-            var agregar = function (obj) {
-                var valor = PF('pb').getValue() + avance;
-                document.location = "?valor=" + valor.toString();
-            }
-		</script>
     </h:body>
 </html>
