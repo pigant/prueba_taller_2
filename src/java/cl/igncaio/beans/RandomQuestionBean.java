@@ -59,18 +59,26 @@ public class RandomQuestionBean {
 				int numero = new Random().nextInt(preguntas.size());
 				// Reviso que antes no haya salido, de lo contrario genero otro
 				if (!salidosLista.contains(numero)) {
-					//Obtengo la pregunta random
-					Pregunta pp = preguntas.get(numero);
+					//Obtengo la pregunta random y la clono, para no modificar la original
+					Pregunta pp;
+					try {
+						pp = (Pregunta) preguntas.get(numero).clone();
+					} catch (CloneNotSupportedException ex) {
+						Logger.getLogger(RandomQuestionBean.class.getName()).log(Level.SEVERE, null, ex);
+						break;
+					}
 					// La guardo en mi nueva lista
 					listaPreguntas.add(pp);
 					// El numero se guarda en una lista, para que no se vuelva repetir
 					salidosLista.add(numero);
-					// Aca abajo las respuestas quedan ordenadas en random
-					//CODIGO CON BUG ACTUALMENTE
+					// Respuestas ordenadas de forma random
+					//respuestas
 					String[] respuestas = pp.getRespuestas();
+					//Creo un nuevo array que contendra las preguntas con orden random
 					String[] tempRespuesta = new String[4];
+					//Guardo numeros para que no se repitan
 					ArrayList<Integer> respuestasRandom = new ArrayList(4);
-					int[] usadas = new int[4];
+					// Populo respuestaRandom, para que quede con numeros ordenamdos random
 					for (int i = 0; i < 4; i++) {
 						boolean continuar2 = true;
 						while (continuar2) {
@@ -81,13 +89,16 @@ public class RandomQuestionBean {
 							}
 						}
 					}
+					// Con todos los numeros random reordeno las listas
 					for (int i = 0; i < respuestas.length; i++) {
 						int indice = respuestasRandom.get(i);
+						// Dado que siempre la primera repuesta es la correcta setea la nueva ubicacion de la respuesta correcta
 						if (indice == 0) {
 							pp.setCorrecta(i);
 						}
 						tempRespuesta[i] = respuestas[indice];
 					}
+					// Guarda los cambios
 					pp.setRespuestas(tempRespuesta);
 					continuar = false;
 				}

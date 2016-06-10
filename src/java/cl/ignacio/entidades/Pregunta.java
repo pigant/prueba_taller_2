@@ -9,7 +9,8 @@ package cl.ignacio.entidades;
  *
  * @author ignacio
  */
-public class Pregunta {
+public class Pregunta implements Cloneable{
+
 	private String pregunta;
 	private String[] respuestas;
 	private int correcta;
@@ -42,6 +43,11 @@ public class Pregunta {
 
 	public void setCorrecta(int correcta) {
 		this.correcta = correcta;
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone(); //To change body of generated methods, choose Tools | Templates.
 	}
 
 
